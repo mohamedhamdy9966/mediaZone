@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Home from './components/Home'
 import img from './assets/main-img.png'
+import scrroll from "./assets/scrroll.png"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -59,7 +60,13 @@ function App() {
           willChange: 'transform',
         }}
       >
-        {/* Content can go here */}
+        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-20">
+          <img
+            src={scrroll}
+            alt="Scroll indicator"
+            className="w-28 h-20 animate-bounce"
+          />
+        </div>
       </div>
       {/* White flash overlay */}
       {flash && (

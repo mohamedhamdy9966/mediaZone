@@ -1,6 +1,5 @@
 import React from "react";
 import img from "../assets/image2.png";
-import scrroll from "../assets/scrroll.png";
 
 function Studies() {
   return (
@@ -21,13 +20,6 @@ function Studies() {
           alt="Case Study"
           className="w-full max-w-[220px] rounded-lg shadow-lg -rotate-12 md:-rotate-20"
         />
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-          <img
-            src={scrroll}
-            alt="Scroll indicator"
-            className="w-28 h-20 animate-bounce"
-          />
-        </div>
       </div>
     </div>
   );
