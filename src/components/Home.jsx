@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import img from "../assets/img3.png";
+import img from "../assets/img4.png";
 import img2 from "../assets/logo.png2 1.png";
 import logo from "../assets/logo.png";
 import scroll from "../assets/scroll.png";
