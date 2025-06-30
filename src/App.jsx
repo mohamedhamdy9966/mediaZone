@@ -30,7 +30,7 @@ function App() {
               setFlash(true)
               setTimeout(() => {
                 setShowHome(true)
-              }, 1000)
+              }, 500)
             }
           },
         },
