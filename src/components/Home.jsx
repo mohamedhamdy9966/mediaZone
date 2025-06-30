@@ -397,7 +397,7 @@ function Home() {
         <img
           src={scroll}
           alt="Scroll indicator"
-          className="w-34 h-24 animate-bounce"
+          className="w-28 h-24 animate-bounce"
         />
       </div>
       <div className="flex justify-center w-full">
