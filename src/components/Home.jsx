@@ -3,6 +3,7 @@ import img from "../assets/img4.png";
 import img2 from "../assets/logo.png2 1.png";
 import logo from "../assets/logo.png";
 import scroll from "../assets/scroll.png";
+import scrroll from "../assets/scrroll.png";
 import dogimg from "../assets/image 23.png";
 import About from "../assets/Group 114.png";
 import Skipped from "./Skipped";
@@ -16,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 function Home() {
   const [navOpen, setNavOpen] = useState(false);
   const [zoomIn, setZoomIn] = useState(false);
+  const [showAltScroll, setShowAltScroll] = useState(false);
 
   // Refs for different sections
   const whoAreWeRef = useRef(null);
@@ -259,32 +261,37 @@ function Home() {
       }
     }
 
-    const scrollIndicator = document.querySelector('.scroll-indicator');
-  
-  if (scrollIndicator) {
-    // Bounce animation
-    gsap.to(scrollIndicator, {
-      y: -20,
-      duration: 1.5,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
+    const scrollIndicator = document.querySelector(".scroll-indicator-img");
 
-    // Hide/show on scroll
-    ScrollTrigger.create({
-      trigger: "body",
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => {
-        if (self.direction === 1) { // scrolling down
-          gsap.to(scrollIndicator, { opacity: 0, y: -40, duration: 0.3 });
-        } else if (self.progress < 0.1) { // near top
-          gsap.to(scrollIndicator, { opacity: 1, y: 0, duration: 0.3 });
+    if (scrollIndicator && skippedRef.current) {
+      // Bounce animation
+      gsap.to(scrollIndicator, {
+        y: -20,
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      let scrollY = 0;
+      const handleScroll = () => {
+        const newScrollY = window.scrollY;
+
+        if (newScrollY > 150 && scrollY <= 150) {
+          setShowAltScroll(true);
+        } else if (newScrollY <= 150 && scrollY > 150) {
+          setShowAltScroll(false);
         }
-      }
-    });
-  }
+
+        scrollY = newScrollY;
+      };
+
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
   }, []);
 
   return (
@@ -321,17 +328,17 @@ function Home() {
             </a>
           </li>
           <li>
-            <a href="#" style={{ color: "gray" }}>
+            <a href="#" style={{ color: "#D3D3D3" }}>
               About
             </a>
           </li>
           <li>
-            <a href="#" style={{ color: "gray" }}>
+            <a href="#" style={{ color: "#D3D3D3" }}>
               Services
             </a>
           </li>
           <li>
-            <a href="#" style={{ color: "gray" }}>
+            <a href="#" style={{ color: "#D3D3D3" }}>
               Contact Us
             </a>
           </li>
@@ -422,9 +429,9 @@ function Home() {
       </div>
       <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20">
         <img
-          src={scroll}
+          src={showAltScroll ? scrroll : scroll}
           alt="Scroll indicator"
-          className="w-28 h-20"
+          className="w-28 h-20 scroll-indicator-img"
         />
       </div>
       <div className="flex justify-center w-full">
