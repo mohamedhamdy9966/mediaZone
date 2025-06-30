@@ -263,33 +263,65 @@ function Home() {
 
     const scrollIndicator = document.querySelector(".scroll-indicator-img");
 
-    if (scrollIndicator && skippedRef.current) {
-      // Bounce animation
-      gsap.to(scrollIndicator, {
-        y: -20,
+    if (scrollIndicator) {
+      // Responsive bounce animation
+      const bounceAnimation = gsap.to(scrollIndicator, {
+        y: () => (window.innerWidth < 768 ? -10 : -20), // Smaller bounce on mobile
         duration: 1.5,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
       });
 
-      let scrollY = 0;
-      const handleScroll = () => {
-        const newScrollY = window.scrollY;
+      // Responsive scroll detection for image swap
+      const scrollTrigger = ScrollTrigger.create({
+        trigger: "body",
+        start: "top top",
+        end: () => `top+=${window.innerWidth < 768 ? 100 : 150} top`, // Adjust threshold for mobile
+        onEnter: () => setShowAltScroll(true),
+        onLeaveBack: () => setShowAltScroll(false),
+        markers: false, // Set to true for debugging if needed
+      });
 
-        if (newScrollY > 150 && scrollY <= 150) {
-          setShowAltScroll(true);
-        } else if (newScrollY <= 150 && scrollY > 150) {
-          setShowAltScroll(false);
-        }
+      // Responsive hide/show on scroll
+      ScrollTrigger.create({
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          if (self.direction === 1) {
+            // scrolling down
+            gsap.to(scrollIndicator, {
+              opacity: 0,
+              y: () => (window.innerWidth < 768 ? -20 : -40),
+              duration: 0.3,
+            });
+          } else if (self.progress < 0.1) {
+            // near top
+            gsap.to(scrollIndicator, {
+              opacity: 1,
+              y: 0,
+              duration: 0.3,
+            });
+          }
+        },
+      });
 
-        scrollY = newScrollY;
+      // Handle window resize
+      const handleResize = () => {
+        scrollTrigger.vars.end = `top+=${
+          window.innerWidth < 768 ? 100 : 150
+        } top`;
+        scrollTrigger.refresh();
+        bounceAnimation.vars.y = window.innerWidth < 768 ? -10 : -20;
+        bounceAnimation.restart();
       };
 
-      window.addEventListener("scroll", handleScroll);
+      window.addEventListener("resize", handleResize);
 
       return () => {
-        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener("resize", handleResize);
+        scrollTrigger.kill();
       };
     }
   }, []);
@@ -427,11 +459,11 @@ function Home() {
         </div>
         {/* About image below, centered */}
       </div>
-      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+      <div className="fixed bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20">
         <img
           src={showAltScroll ? scrroll : scroll}
           alt="Scroll indicator"
-          className="w-28 h-20 scroll-indicator-img"
+          className="scroll-indicator-img w-20 h-14 md:w-28 md:h-20 transition-opacity duration-300"
         />
       </div>
       <div className="flex justify-center w-full">
