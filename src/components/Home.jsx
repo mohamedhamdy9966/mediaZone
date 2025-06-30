@@ -258,6 +258,33 @@ function Home() {
         );
       }
     }
+
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+  
+  if (scrollIndicator) {
+    // Bounce animation
+    gsap.to(scrollIndicator, {
+      y: -20,
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+
+    // Hide/show on scroll
+    ScrollTrigger.create({
+      trigger: "body",
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        if (self.direction === 1) { // scrolling down
+          gsap.to(scrollIndicator, { opacity: 0, y: -40, duration: 0.3 });
+        } else if (self.progress < 0.1) { // near top
+          gsap.to(scrollIndicator, { opacity: 1, y: 0, duration: 0.3 });
+        }
+      }
+    });
+  }
   }, []);
 
   return (
@@ -397,7 +424,7 @@ function Home() {
         <img
           src={scroll}
           alt="Scroll indicator"
-          className="w-28 h-20 animate-bounce"
+          className="w-28 h-20"
         />
       </div>
       <div className="flex justify-center w-full">

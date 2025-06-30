@@ -14,7 +14,9 @@ import image11 from '../assets/image 23.png'
 function CaseStudies() {
   return (
     <>
-      <h1 className='text-6xl text-center text-white jaro mb-8'>Our Studies</h1>
+      <h1 className='text-9xl text-center text-white mb-8' style={{ fontFamily: 'Vibur, cursive' }}>
+        Case Studies
+      </h1>
           {/* Top Row: Horizontal Scroll */}
       <div className="overflow-x-auto py-4 flex justify-center">
         <div className="flex  justify-center gap-8 px-2 items-center flex-wrap">
