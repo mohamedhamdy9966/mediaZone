@@ -311,7 +311,7 @@ function Home() {
         </ul>
         {/* Logo on the right */}
         <div className="flex-1 flex justify-end">
-          <img src={img2} alt="Logo" className="h-36" />
+          <img src={img2} alt="Logo" className="h-44" />
         </div>
       </nav>
 
@@ -393,8 +393,12 @@ function Home() {
         </div>
         {/* About image below, centered */}
       </div>
-      <div className="flex justify-center items-center pb-8">
-        <img src={scroll} alt="Scroll indicator" className="w-24 h-24" />
+      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+        <img
+          src={scroll}
+          alt="Scroll indicator"
+          className="w-12 h-12 animate-bounce" // Added bounce animation
+        />
       </div>
       <div className="flex justify-center w-full">
         <img ref={aboutImageRef} src={About} alt="about" className="mx-auto" />
