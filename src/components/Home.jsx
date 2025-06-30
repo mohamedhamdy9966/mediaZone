@@ -3,7 +3,6 @@ import img from "../assets/img4.png";
 import img2 from "../assets/logo.png2 1.png";
 import logo from "../assets/logo.png";
 import scroll from "../assets/scroll.png";
-import scrroll from "../assets/scrroll.png";
 import dogimg from "../assets/image 23.png";
 import About from "../assets/Group 114.png";
 import Skipped from "./Skipped";
@@ -17,7 +16,6 @@ gsap.registerPlugin(ScrollTrigger);
 function Home() {
   const [navOpen, setNavOpen] = useState(false);
   const [zoomIn, setZoomIn] = useState(false);
-  const [showAltScroll, setShowAltScroll] = useState(false);
 
   // Refs for different sections
   const whoAreWeRef = useRef(null);
@@ -261,69 +259,32 @@ function Home() {
       }
     }
 
-    const scrollIndicator = document.querySelector(".scroll-indicator-img");
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+  
+  if (scrollIndicator) {
+    // Bounce animation
+    gsap.to(scrollIndicator, {
+      y: -20,
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
 
-    if (scrollIndicator) {
-      // Responsive bounce animation
-      const bounceAnimation = gsap.to(scrollIndicator, {
-        y: () => (window.innerWidth < 768 ? -10 : -20), // Smaller bounce on mobile
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      // Responsive scroll detection for image swap
-      const scrollTrigger = ScrollTrigger.create({
-        trigger: "body",
-        start: "top top",
-        end: () => `top+=${window.innerWidth < 768 ? 100 : 150} top`, // Adjust threshold for mobile
-        onEnter: () => setShowAltScroll(true),
-        onLeaveBack: () => setShowAltScroll(false),
-        markers: false, // Set to true for debugging if needed
-      });
-
-      // Responsive hide/show on scroll
-      ScrollTrigger.create({
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          if (self.direction === 1) {
-            // scrolling down
-            gsap.to(scrollIndicator, {
-              opacity: 0,
-              y: () => (window.innerWidth < 768 ? -20 : -40),
-              duration: 0.3,
-            });
-          } else if (self.progress < 0.1) {
-            // near top
-            gsap.to(scrollIndicator, {
-              opacity: 1,
-              y: 0,
-              duration: 0.3,
-            });
-          }
-        },
-      });
-
-      // Handle window resize
-      const handleResize = () => {
-        scrollTrigger.vars.end = `top+=${
-          window.innerWidth < 768 ? 100 : 150
-        } top`;
-        scrollTrigger.refresh();
-        bounceAnimation.vars.y = window.innerWidth < 768 ? -10 : -20;
-        bounceAnimation.restart();
-      };
-
-      window.addEventListener("resize", handleResize);
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-        scrollTrigger.kill();
-      };
-    }
+    // Hide/show on scroll
+    ScrollTrigger.create({
+      trigger: "body",
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        if (self.direction === 1) { // scrolling down
+          gsap.to(scrollIndicator, { opacity: 0, y: -40, duration: 0.3 });
+        } else if (self.progress < 0.1) { // near top
+          gsap.to(scrollIndicator, { opacity: 1, y: 0, duration: 0.3 });
+        }
+      }
+    });
+  }
   }, []);
 
   return (
@@ -459,11 +420,11 @@ function Home() {
         </div>
         {/* About image below, centered */}
       </div>
-      <div className="fixed bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20">
         <img
-          src={showAltScroll ? scrroll : scroll}
+          src={scroll}
           alt="Scroll indicator"
-          className="scroll-indicator-img w-20 h-14 md:w-28 md:h-20 transition-opacity duration-300"
+          className="w-28 h-20"
         />
       </div>
       <div className="flex justify-center w-full">
